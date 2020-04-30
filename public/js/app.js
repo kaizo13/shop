@@ -37673,7 +37673,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Funciono\n")])
+  return _c("div", { staticClass: "text-blue-400" }, [_vm._v("Funciono")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -53128,7 +53128,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var Example = function Example() {
-  return '../components/ExampleComponent';
+  return Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! ../components/ExampleComponent */ "./resources/js/components/ExampleComponent.vue"));
 };
 
 var Product = function Product() {
@@ -53136,6 +53136,10 @@ var Product = function Product() {
 };
 
 var routes = [{
+  path: "/",
+  name: "home",
+  component: Example
+}, {
   path: "/product",
   name: "product",
   component: Product

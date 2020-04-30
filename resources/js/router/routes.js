@@ -1,11 +1,16 @@
-const Example = () =>  ('../components/ExampleComponent');
-const Product = () => import ('../components/Product');
+const Example = () => import('../components/ExampleComponent');
+const Product = () => import('../components/Product');
 
-const routes=[
+const routes = [
     {
-        path:"/product",
-        name:"product",
-        component:Product,
+        path: "/",
+        name: "home",
+        component: Example,
+    },
+    {
+        path: "/product",
+        name: "product",
+        component: Product,
     },
 ]
 

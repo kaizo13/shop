@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateShipmentsTable extends Migration
+class CreateValorationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateShipmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipments', function (Blueprint $table) {
+        Schema::create('valorations', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('idCustomer')->unsigned();
-            $table->date('startDate');
-            $table->date('endDate');
+            $table->bigInteger('idProduct')->unsigned();
+            $table->float('valoration')->unsigned()->nullable();
             $table->foreign('idCustomer')->references('id')->on('customers');
+            $table->foreign('idProduct')->references('id')->on('products');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateShipmentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('shipments');
+        Schema::dropIfExists('valorations');
     }
 }
