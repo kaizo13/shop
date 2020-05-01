@@ -14,6 +14,25 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Article
+    Route::post('/storeArticle','ArticleController@store');
+
+//Brand
+    Route::post('/storeBrand','BrandController@store');
+
+//Cart
+    Route::post('/storeCart','CartController@store');
+
+//Comment
+    Route::post('/storeComment','CommentController@store');
+    Route::get('/getComments/{id}','CommentController@get');
+
+//Customer
+    Route::post('/storeCustomer','CustomerController@store');
+
+//Product
+    Route::post('/storeProduct','ProductController@store');
+
+
+//Valoration
+    Rotue::post('/storeValoration','ValorationController@store');

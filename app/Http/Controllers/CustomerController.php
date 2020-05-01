@@ -2,84 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
-        //
+        $user=new User;
+        $user->email=$request->email;
+        $user->passtword=bcrypt($request->password);
+        $user->role="CUSTOMER";
+       
+
+        $customer=new Customer;
+        $customer->name=$request->name;
+        $customer->dni=$request->dni;
+        $customer->email=$request->email;
+        $customer->phone=$request->phone;
+        $customer->address=$request->address;
+        $customer->postalCode=$request->postalCode;
+
+        $user->save();
+        $customer->id=$user->id;
+        $customer->save();
+
+        $cart=new Cart;
+        $cart->name="Carro 1";
+        $cart->idCostumer=$customer->id;
+        $cart->save();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
-    }
+    
 }
