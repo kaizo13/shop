@@ -14,7 +14,7 @@ class CustomerController extends Controller
     {
         $user=new User;
         $user->email=$request->email;
-        $user->passtword=bcrypt($request->password);
+        $user->password=bcrypt($request->password);
         $user->role="CUSTOMER";
        
 
@@ -27,12 +27,12 @@ class CustomerController extends Controller
         $customer->postalCode=$request->postalCode;
 
         $user->save();
-        $customer->id=$user->id;
+        $customer->idUser=$user->id;
         $customer->save();
 
         $cart=new Cart;
         $cart->name="Carro 1";
-        $cart->idCostumer=$customer->id;
+        $cart->idCustomer=$customer->id;
         $cart->save();
     }
 

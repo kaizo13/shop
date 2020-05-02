@@ -32,7 +32,10 @@ use Illuminate\Support\Facades\Route;
 
 //Product
     Route::post('/storeProduct','ProductController@store');
+    Route::get('/getProduct/{id}','ProductController@get');
+    Route::get('/getProducts','ProductController@getProducts');
 
 
 //Valoration
-    Rotue::post('/storeValoration','ValorationController@store');
+    Route::post('/storeValoration','ValorationController@store');
+    Route::post('/updateValoration/{id}','ValorationController@update');
