@@ -50,7 +50,7 @@ class ProductController extends Controller
         $products=DB::table('products')
             ->join('articles','products.idArticle','articles.id')
             ->join('brands','products.idBrand','brands.id')
-            ->orderBy('products.created_at','desc')
+             ->orderBy('products.id','desc')
             ->select('products.id','description','price','articles.name as article','brands.name as brand');
         
 
@@ -60,6 +60,18 @@ class ProductController extends Controller
 
         if($request->idBrand){
             $products->where('brands.id','=',$request->idBrand);
+        }
+
+        if($request->minPrice){
+            $products->where('price','>=',$request->minPrice);
+        }
+
+        if($request->maxPrice){
+            $products->where('price','<=',$request->maxPrice);
+        }
+
+        if($request->description){
+            $products->where('description','like', '%' . $request->description . '%');
         }
 
         $products=$products->get();
