@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Brand;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
 use DB;
@@ -27,6 +28,7 @@ class ProductController extends Controller
         $article=Article::find($product->idArticle);
         $brand=Brand::find($product->idBrand);
         $valorations=Valoration::where('idProduct',$id)->get();
+        $product['images']=ProductImage::where('idProduct',$id)->select('img')->get();
         $result=0;
         if(count($valorations)){
             foreach($valorations as $valoration){
@@ -48,10 +50,12 @@ class ProductController extends Controller
 
     public function getProducts(Request $request){
         $products=DB::table('products')
-            ->join('articles','products.idArticle','articles.id')
-            ->join('brands','products.idBrand','brands.id')
+            // ->join('articles','products.idArticle','articles.id')
+            // ->join('brands','products.idBrand','brands.id')
              ->orderBy('products.id','desc')
-            ->select('products.id','description','price','articles.name as article','brands.name as brand');
+            // ->select('products.id','description','price','articles.name as article','brands.name as brand');
+            ->select('products.id','description','price');
+        
         
 
         if($request->idArticle){

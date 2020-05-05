@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\ProductImage;
 use App\Models\User;
 use App\Models\Valoration;
 
@@ -122,6 +123,21 @@ class generateProducts extends Command
             $product->description=$article->name . " de " . $brand->name;
             $product->price=rand(15,65);
             $product->save();
+
+            $pi=new ProductImage;
+            $pi->img="product.jpg";
+            $pi->idProduct=$product->id;
+            $pi->save();
+
+            $pi2=new ProductImage;
+            $pi2->img="product2.jpg";
+            $pi2->idProduct=$product->id;
+            $pi2->save();
+
+            $pi3=new ProductImage;
+            $pi3->img="product3.jpg";
+            $pi3->idProduct=$product->id;
+            $pi3->save();
 
             foreach($customers as $customer){
                 $valoration=new Valoration;

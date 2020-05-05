@@ -23,7 +23,21 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 import App from "./components/App.vue";
 import router from "./router";
+import axios from "axios";
+import Vuetify from 'vuetify';
+import VueCarousel from 'vue-carousel';
+import VueStars from 'vue-stars';
+import StartRating from 'vue-star-rating';
 
+const base = axios.create({
+    baseURL: "http://localhost:8000"
+});
+
+Vue.prototype.$axios = base;
+Vue.use(Vuetify);
+Vue.use(VueCarousel);
+Vue.component("vue-stars",VueStars);
+Vue.component('star-rating',StartRating);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
