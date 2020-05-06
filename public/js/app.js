@@ -1982,6 +1982,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1995,7 +2003,7 @@ __webpack_require__.r(__webpack_exports__);
     fetchProduct: function fetchProduct() {
       var _this = this;
 
-      this.$axios.get("api/getProduct/1").then(function (response) {
+      this.$axios.get("api/getProduct/15").then(function (response) {
         _this.product = response.data;
       });
     }
@@ -38385,50 +38393,77 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: " h-56 " }, [
-    _c(
-      "div",
-      { staticClass: "w-40 ml-8" },
-      [
-        _c(
-          "carousel",
-          {
-            staticClass: "carousel-slider",
-            attrs: {
-              "per-page": 1,
-              autoplay: true,
-              autoplayHoverPause: true,
-              "mouse-drag": true,
-              width: 100,
-              loop: true,
-              "navigation-enabled": false,
-              paginationEnabled: false,
-              autoplayTimeOut: 3000,
-              speed: 500
-            }
-          },
-          _vm._l(_vm.product.images, function(image, index) {
-            return _c("slide", { key: index }, [
-              _c("img", {
-                staticClass: "w-40",
-                attrs: { src: "/storage/" + image.img }
-              })
-            ])
-          }),
-          1
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "flex" }, [
-      _c("p", { staticClass: "bg-green-500 text-white px-5 py-1" }, [
-        _vm._v(_vm._s(_vm.product.description) + " ")
-      ]),
+  return _c("div", { staticClass: " h-56 justify-center pt-1 " }, [
+    _c("div", { staticClass: "w-40 static" }, [
+      _vm.product.stock == 0
+        ? _c("div", [
+            _c("img", {
+              staticClass:
+                "absolute top-0 h-40 ml-8 z-10 bg-black bg-opacity-50",
+              attrs: { src: "/storage/cross.png" }
+            })
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _c("p", { staticClass: "bg-green-800 text-white px-1 py-1" }, [
-        _vm._v(_vm._s(_vm.product.price) + "€")
-      ])
+      _c(
+        "div",
+        { staticClass: "relative top-0 left-0 w-40 ml-8 " },
+        [
+          _vm.product.images.length > 1
+            ? _c(
+                "carousel",
+                {
+                  staticClass: "carousel-slider static z-0",
+                  attrs: {
+                    "per-page": 1,
+                    autoplay: true,
+                    autoplayHoverPause: true,
+                    "mouse-drag": true,
+                    width: 100,
+                    loop: true,
+                    "navigation-enabled": false,
+                    paginationEnabled: false,
+                    autoplayTimeOut: 3000,
+                    speed: 500
+                  }
+                },
+                _vm._l(_vm.product.images, function(image, index) {
+                  return _c("slide", { key: index }, [
+                    _c("img", {
+                      staticClass: "h-40",
+                      attrs: { src: "/storage/" + image.img }
+                    })
+                  ])
+                }),
+                1
+              )
+            : _c("img", {
+                staticClass: "static z-0",
+                attrs: { src: "/storage/" + _vm.product.images[0].img }
+              })
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex mt-1 " }, [
+      _c(
+        "p",
+        {
+          staticClass:
+            "bg-green-500 text-white px-5 py-1 rounded-lg rounded-r-none"
+        },
+        [_vm._v(_vm._s(_vm.product.description) + " ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "p",
+        {
+          staticClass:
+            "bg-green-800 text-white px-1 py-1 rounded-lg rounded-l-none"
+        },
+        [_vm._v(_vm._s(_vm.product.price) + "€")]
+      )
     ]),
     _vm._v(" "),
     _c(
@@ -38448,7 +38483,17 @@ var render = function() {
         })
       ],
       1
-    )
+    ),
+    _vm._v(" "),
+    _vm.product.stock < 50 && _vm.product.stock > 0
+      ? _c("p", { staticClass: "text-red-800 text-center mt-1" }, [
+          _vm._v("Últimas " + _vm._s(_vm.product.stock) + " unidades")
+        ])
+      : _vm.product.stock == 0
+      ? _c("p", { staticClass: "text-red-500 text-center mt-1" }, [
+          _vm._v("AGOTADO")
+        ])
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

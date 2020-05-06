@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Brand;
 use App\Models\Cart;
 use App\Models\Customer;
+use App\Models\Family;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\User;
@@ -93,18 +94,24 @@ class generateProducts extends Command
         $cart2->idCustomer=$customer2->id;
         $cart2->save();
 
+        $family=new Family;
+        $family->name="Ropa";
+        $family->save();
+
         $articles=array('Camiseta','Pantalón','Polo','Gorra','Zapatos','Bolso','Americana');
         $brands=array('Armani','Gucci','Hugo Boss','Channel','Zara','Cortefield','Mango');
 
         foreach($articles as $article){
             $a=new Article;
             $a->name=$article;
+            $a->idFamily=1;
             $a->save();
         }
 
         foreach($brands as $brand){
             $b=new Brand;
             $b->name=$brand;
+            $b->idFamily=1;
             $b->save();
         }
 
@@ -122,6 +129,7 @@ class generateProducts extends Command
             $product->idBrand=$brand->id;
             $product->description=$article->name . " de " . $brand->name;
             $product->price=rand(15,65);
+            $product->stock=rand(0,500);
             $product->save();
 
             $pi=new ProductImage;

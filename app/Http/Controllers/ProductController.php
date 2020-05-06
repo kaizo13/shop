@@ -54,7 +54,7 @@ class ProductController extends Controller
             // ->join('brands','products.idBrand','brands.id')
              ->orderBy('products.id','desc')
             // ->select('products.id','description','price','articles.name as article','brands.name as brand');
-            ->select('products.id','description','price');
+            ->select('products.id','description','price','stock');
         
         
 
@@ -82,7 +82,7 @@ class ProductController extends Controller
 
 
         foreach($products as $product){
-           
+            $product->imgages=ProductImage::where('idProduct',$product->id)->select('img')->get();
             $valorations=Valoration::where('idProduct',$product->id)->get();
             $result=0;
             if(count($valorations)){
