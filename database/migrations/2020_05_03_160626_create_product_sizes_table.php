@@ -16,8 +16,10 @@ class CreateProductSizesTable extends Migration
         Schema::create('product_sizes', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('idProduct')->unsigned();
-            $table->string('size');
+            $table->bigInteger('idSize')->unsigned();
+            $table->integer('stock')->unsigned();
             $table->foreign('idProduct')->references('id')->on('products');
+            $table->foreign('idSize')->references('id')->on('sizes');
             $table->timestamps();
         });
     }

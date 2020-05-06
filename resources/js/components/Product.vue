@@ -2,7 +2,7 @@
   <div class=" h-56 justify-center pt-1 ">
     <div class="w-40 static">
         <div v-if="product.stock==0">
-          <img  class="absolute top-0 h-40 ml-8 z-10 bg-black bg-opacity-50" src="/storage/cross.png">
+          <img  class="absolute top-0 w-40 h-40 ml-8 z-10 bg-black bg-opacity-75" src="/storage/cross3.png">
         </div>
         <div class="relative top-0 left-0 w-40 ml-8 ">
           <carousel class="carousel-slider static z-0" :per-page="1" :autoplay="true" :autoplayHoverPause="true" :mouse-drag="true" :width="100"
@@ -22,8 +22,20 @@
       <star-rating  :rating="product.valoration" :read-only="true" :show-rating="false" :increment="0.25"
                   active-color="#f3bf48" :star-size="30" :padding="5"></star-rating>
     </div>
-    <p v-if="product.stock<50 && product.stock>0" class="text-red-800 text-center mt-1">Últimas {{product.stock}} unidades</p>
-    <p v-else-if="product.stock==0" class="text-red-500 text-center mt-1">AGOTADO</p>
+    <div class="mt-1">
+      <div v-if="product.stock!=0">
+          <div class="flex justify-center">
+            <div v-for="(size,index) in product.sizes" :key="index">
+              <p class="mx-2"  v-if="size.stock>0" >{{size.size}}</p>
+              <p class="mx-2 text-gray-500" v-else>{{size.size}}</p>
+            </div>
+           
+          </div>
+      </div>
+      <div v-else>
+          <p class="text-red-500 text-center mt-1">SIN STOCK</p>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -40,6 +52,7 @@ export default {
    fetchProduct(){
      this.$axios.get(`api/getProduct/15`).then(response =>{
         this.product=response.data;
+        // this.product.stock=0;
      });
    }
  } 
@@ -59,5 +72,6 @@ export default {
 .VueCarousel-slide-active {
   opacity: 1 !important;
 }
+
 
 </style>

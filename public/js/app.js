@@ -1990,6 +1990,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2004,7 +2016,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.$axios.get("api/getProduct/15").then(function (response) {
-        _this.product = response.data;
+        _this.product = response.data; // this.product.stock=0;
       });
     }
   }
@@ -6555,7 +6567,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.VueCarousel-inner {\n  transition: none !important;\n}\n.VueCarousel-slide {\n  transition: all 0.5s;\n  opacity: 0 !important;\n}\n.VueCarousel-slide-active {\n  opacity: 1 !important;\n}\n\n", ""]);
+exports.push([module.i, "\n.VueCarousel-inner {\n  transition: none !important;\n}\n.VueCarousel-slide {\n  transition: all 0.5s;\n  opacity: 0 !important;\n}\n.VueCarousel-slide-active {\n  opacity: 1 !important;\n}\n\n\n", ""]);
 
 // exports
 
@@ -38399,8 +38411,8 @@ var render = function() {
         ? _c("div", [
             _c("img", {
               staticClass:
-                "absolute top-0 h-40 ml-8 z-10 bg-black bg-opacity-50",
-              attrs: { src: "/storage/cross.png" }
+                "absolute top-0 w-40 h-40 ml-8 z-10 bg-black bg-opacity-75",
+              attrs: { src: "/storage/cross3.png" }
             })
           ])
         : _vm._e(),
@@ -38485,15 +38497,32 @@ var render = function() {
       1
     ),
     _vm._v(" "),
-    _vm.product.stock < 50 && _vm.product.stock > 0
-      ? _c("p", { staticClass: "text-red-800 text-center mt-1" }, [
-          _vm._v("Últimas " + _vm._s(_vm.product.stock) + " unidades")
-        ])
-      : _vm.product.stock == 0
-      ? _c("p", { staticClass: "text-red-500 text-center mt-1" }, [
-          _vm._v("AGOTADO")
-        ])
-      : _vm._e()
+    _c("div", { staticClass: "mt-1" }, [
+      _vm.product.stock != 0
+        ? _c("div", [
+            _c(
+              "div",
+              { staticClass: "flex justify-center" },
+              _vm._l(_vm.product.sizes, function(size, index) {
+                return _c("div", { key: index }, [
+                  size.stock > 0
+                    ? _c("p", { staticClass: "mx-2" }, [
+                        _vm._v(_vm._s(size.size))
+                      ])
+                    : _c("p", { staticClass: "mx-2 text-gray-500" }, [
+                        _vm._v(_vm._s(size.size))
+                      ])
+                ])
+              }),
+              0
+            )
+          ])
+        : _c("div", [
+            _c("p", { staticClass: "text-red-500 text-center mt-1" }, [
+              _vm._v("SIN STOCK")
+            ])
+          ])
+    ])
   ])
 }
 var staticRenderFns = []

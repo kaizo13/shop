@@ -9,6 +9,8 @@ use App\Models\Customer;
 use App\Models\Family;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Size;
+use App\Models\ProductSize;
 use App\Models\User;
 use App\Models\Valoration;
 
@@ -100,6 +102,8 @@ class generateProducts extends Command
 
         $articles=array('Camiseta','Pantalón','Polo','Gorra','Zapatos','Bolso','Americana');
         $brands=array('Armani','Gucci','Hugo Boss','Channel','Zara','Cortefield','Mango');
+        $sizes=array('S','M','L','XL');
+
 
         foreach($articles as $article){
             $a=new Article;
@@ -115,11 +119,16 @@ class generateProducts extends Command
             $b->save();
         }
 
-       
+        foreach($sizes as $size){
+            $s=new Size;
+            $s->size=$size;
+            $s->save();
+        }
 
         $articles=Article::all();
         $brands=Brand::all();
         $customers=Customer::all();
+        $sizes=Size::all();
 
         for($i=0;$i<25;$i++){
             $product=new Product;
@@ -129,7 +138,6 @@ class generateProducts extends Command
             $product->idBrand=$brand->id;
             $product->description=$article->name . " de " . $brand->name;
             $product->price=rand(15,65);
-            $product->stock=rand(0,500);
             $product->save();
 
             $pi=new ProductImage;
@@ -153,6 +161,14 @@ class generateProducts extends Command
                 $valoration->idCustomer=$customer->id;
                 $valoration->valoration=random_int(1,5);
                 $valoration->save();
+            }
+
+            foreach($sizes as $size){
+                $ps=new ProductSize;
+                $ps->idProduct=$product->id;
+                $ps->idSize=$size->id;
+                $ps->stock=rand(0,500);
+                $ps->save();    
             }
             
         }

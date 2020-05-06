@@ -19,7 +19,6 @@ class CreateProductsTable extends Migration
             $table->bigInteger('idBrand')->unsigned();
             $table->string('description');
             $table->float('price');
-            $table->integer('stock');
             $table->foreign('idArticle')->references('id')->on('articles');
             $table->foreign('idBrand')->references('id')->on('brands');
             $table->timestamps();

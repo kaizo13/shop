@@ -6,6 +6,8 @@ use App\Models\Article;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductSize;
+use App\Models\Size;
 use App\Models\Valoration;
 use Illuminate\Http\Request;
 use DB;
@@ -28,6 +30,7 @@ class ProductController extends Controller
         $article=Article::find($product->idArticle);
         $brand=Brand::find($product->idBrand);
         $valorations=Valoration::where('idProduct',$id)->get();
+        $sizes=ProductSize::where('idProduct',$id)->get();
         $product['images']=ProductImage::where('idProduct',$id)->select('img')->get();
         $result=0;
         if(count($valorations)){
@@ -41,9 +44,25 @@ class ProductController extends Controller
         }else{
             $product['valorations']=0;
         }
+        $data=array();
+        $stock=0;
+        foreach($sizes as $size){
+            
+            $array=array();
+            $s=Size::find($size->idSize);
+            $array['size']=$s->size;
+            $array['stock']=$size->stock;
+
+            array_push($data,$array);
+
+            $stock=$stock + $size->stock;
+
+        }
         
         $product['article']=$article->name;
         $product['brand']=$brand->name;
+        $product['sizes']=$data;
+        $product['stock']=$stock;
         
         return $product;
     }
