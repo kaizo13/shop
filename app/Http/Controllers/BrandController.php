@@ -15,5 +15,9 @@ class BrandController extends Controller
        $brand->save();
     }
 
+    public function get(){
+        return Brand::all();
+    }
+
     
 }

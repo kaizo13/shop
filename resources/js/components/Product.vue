@@ -1,13 +1,13 @@
 <template>
   <div class=" h-56 justify-center pt-1 ">
-    <div class="w-40 static">
-        <div v-if="product.stock==0">
-          <img  class="absolute top-0 w-40 h-40 ml-8 z-10 bg-black bg-opacity-75" src="/storage/cross3.png">
-        </div>
-        <div class="relative top-0 left-0 w-40 ml-8 ">
-          <carousel class="carousel-slider static z-0" :per-page="1" :autoplay="true" :autoplayHoverPause="true" :mouse-drag="true" :width="100"
-            :loop="true" :navigation-enabled="false" :paginationEnabled="false" :autoplayTimeOut="3000" :speed="500" v-if="product.images.length>1">
-            <slide v-for="(image,index) in product.images" :key="index">
+    <div class="w-40 relative" @mouseover="startLoop" @mouseleave="endLoop" style="top:0px">
+        <!-- <div class="relative" >
+          <p v-if="product.stock==0" style="top:160px"  class="relative  w-40 h-40 ml-8 z-10 bg-black bg-opacity-75 text-red-600 justify-center">AGOTADO</p>
+        </div> -->
+        <div class="relative w-40 ml-8 "  >
+          <carousel class="carousel-slider static z-0" :per-page="1" :autoplay="true" :autoplayHoverPause="false"  :mouse-drag="true" :width="100" :value="picture"
+            :loop="loop" :navigation-enabled="false" :paginationEnabled="false" :autoplayTimeOut="3000" :speed="500" :centerMode="true" v-if="product.images.length>1" >
+            <slide v-for="(image,index) in product.images" :key="index" :data-index="index">
               <img :src="'/storage/' + image.img" class="h-40">
             </slide>
           </carousel>
@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="flex mt-1 ">
-      <p class="bg-green-500 text-white px-5 py-1 rounded-lg rounded-r-none">{{product.description}} </p>
+      <p class="w-48 text-sm text-center bg-green-500 text-white px-5 py-1 rounded-lg rounded-r-none">{{product.description}} </p>
       <p class="bg-green-800 text-white px-1 py-1 rounded-lg rounded-l-none">{{product.price}}€</p>
     </div>
    <div class="m-200 w-100 ml-6">
@@ -33,28 +33,34 @@
           </div>
       </div>
       <div v-else>
-          <p class="text-red-500 text-center mt-1">SIN STOCK</p>
+          <p class="text-red-700 text-center mt-1">SIN STOCK</p>
       </div>
     </div>
   </div>
 </template>
 <script>
 export default {
+  name: "Product",
+  props:{
+    product:Object
+  },
  data(){
    return{
-     product:{},
-   }
+     loop:false,
+     picture:0,
+   };
  },
  created(){
-   this.fetchProduct();
+
  },
  methods:{
-   fetchProduct(){
-     this.$axios.get(`api/getProduct/15`).then(response =>{
-        this.product=response.data;
-        // this.product.stock=0;
-     });
-   }
+   startLoop(){
+     this.loop=true;
+   },
+   endLoop(){
+     this.loop=false;
+   },
+   
  } 
 }
 </script>

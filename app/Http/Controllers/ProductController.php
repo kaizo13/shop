@@ -68,12 +68,13 @@ class ProductController extends Controller
     }
 
     public function getProducts(Request $request){
+        
         $products=DB::table('products')
-            // ->join('articles','products.idArticle','articles.id')
-            // ->join('brands','products.idBrand','brands.id')
+             ->join('articles','products.idArticle','articles.id')
+             ->join('brands','products.idBrand','brands.id')
              ->orderBy('products.id','desc')
             // ->select('products.id','description','price','articles.name as article','brands.name as brand');
-            ->select('products.id','description','price','stock');
+            ->select('products.id','description','price');
         
         
 
@@ -93,7 +94,7 @@ class ProductController extends Controller
             $products->where('price','<=',$request->maxPrice);
         }
 
-        if($request->description){
+        if($request->description && strlen($request->description)>=3){
             $products->where('description','like', '%' . $request->description . '%');
         }
 
@@ -101,7 +102,8 @@ class ProductController extends Controller
 
 
         foreach($products as $product){
-            $product->imgages=ProductImage::where('idProduct',$product->id)->select('img')->get();
+            $product->images=ProductImage::where('idProduct',$product->id)->select('img')->get();
+            $sizes=ProductSize::where('idProduct',$product->id)->get();
             $valorations=Valoration::where('idProduct',$product->id)->get();
             $result=0;
             if(count($valorations)){
@@ -114,6 +116,24 @@ class ProductController extends Controller
             }else{
                 $product->valoration=0;
             }
+
+            $data=array();
+            $stock=0;
+            foreach($sizes as $size){
+            
+                $array=array();
+                $s=Size::find($size->idSize);
+                $array['size']=$s->size;
+                $array['stock']=$size->stock;
+    
+                array_push($data,$array);
+    
+                $stock=$stock + $size->stock;
+    
+            }
+
+            $product->sizes=$data;
+            $product->stock=$stock;
         }
 
         return $products;

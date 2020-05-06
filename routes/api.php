@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 //Article
     Route::post('/storeArticle','ArticleController@store');
+    Route::get('/getArticles','ArticleController@get');
 
 //Brand
     Route::post('/storeBrand','BrandController@store');
+    Route::get('/getBrands','BrandController@get');
 
 //Cart
     Route::post('/storeCart','CartController@store');

@@ -15,5 +15,9 @@ class ArticleController extends Controller
         $article->save();
     }
 
+    public function get(){
+        return Article::all();
+    }
+
 
 }
