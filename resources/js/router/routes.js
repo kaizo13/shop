@@ -2,6 +2,7 @@
 const Product = () => import('../components/Product');
 const Products = () => import('../components/Products');
 
+
 const routes = [
     {
         path: "/",
@@ -9,7 +10,7 @@ const routes = [
         component: Products,
     },
     {
-        path: "/product",
+        path: "/product/:productId",
         name: "product",
         component: Product,
     },

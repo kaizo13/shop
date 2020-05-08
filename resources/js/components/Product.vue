@@ -1,67 +1,105 @@
 <template>
-  <div class=" h-56 justify-center pt-1 ">
-    <div class="w-40 relative" @mouseover="startLoop" @mouseleave="endLoop" style="top:0px">
-        <!-- <div class="relative" >
-          <p v-if="product.stock==0" style="top:160px"  class="relative  w-40 h-40 ml-8 z-10 bg-black bg-opacity-75 text-red-600 justify-center">AGOTADO</p>
-        </div> -->
-        <div class="relative w-40 ml-8 "  >
-          <carousel class="carousel-slider static z-0" :per-page="1" :autoplay="true" :autoplayHoverPause="false"  :mouse-drag="true" :width="100" :value="picture"
-            :loop="loop" :navigation-enabled="false" :paginationEnabled="false" :autoplayTimeOut="3000" :speed="500" :centerMode="true" v-if="product.images.length>1" >
-            <slide v-for="(image,index) in product.images" :key="index" :data-index="index">
-              <img :src="'/storage/' + image.img" class="h-40">
-            </slide>
-          </carousel>
-          <img class="static z-0" :src="'/storage/' + product.images[0].img" v-else>
+    <div class="flex">
+         <a href="/"><button class="bg-green-500 rounded text-white p-1">Volver</button></a>
+        <div class="mt-20 ml-20 flex">
+
+           <!-- Imagenes -->
+            <div class="flex">
+                <div class="w-20">
+                        <img class="w-full mt-1" v-for="(image,index) in product.images" :key="index" :src="'/storage/' + image.img" @mouseover="changePicture(image.img)">
+                </div>
+                <div class="w-64">
+                    <img :src="'/storage/' + picture">
+                </div>
+            </div>
+
+            <!-- Contenido -->
+            <div class="w-3/4 justify-center">
+                <h1>{{product.description}}</h1>
+                <div class="flex">
+                    <star-rating  :rating="valoration.valoration===undefined ? product.valoration : valoration.valoration "  :read-only="false" :increment="0.25"
+                        active-color="#f3bf48" :star-size="30" :padding="5" @rating-selected="changeValoration" :show-rating="false" ></star-rating>
+                    <p v-if="show" class="text-gray-700 italic mt-1">Aun no ha valorado este producto</p>
+                    <p v-else class="text-gray-700 italic mt-1"> Su valoración es: {{valoration.valoration}}</p>
+                </div>
+                <div class="flex">
+                    <div v-for="(size,index) in product.sizes" :key="index" @mouseover="sizeStock(size.stock)" @mouseout="generalStock">
+                        <p class="mx-2"  v-if="size.stock>0" >{{size.size}}</p>
+                        <p class="mx-2 text-gray-500" v-else>{{size.size}}</p>
+                    </div>
+                </div>
+                <div v-if="product.stock" class="flex">
+                    Stock:
+                    <p v-if="stock>100">{{stock}}</p>
+                    <p v-else class="text-red-500"> {{stock}} </p>
+                </div>
+                <div v-else>
+                    <p class="text-red-700 mt-1">SIN STOCK</p>
+                </div>
+                <button class="bg-blue-400 text-white p-1 rounded-md ">Añadir al carro</button>
+            </div>
         </div>
     </div>
-    <div class="flex mt-1 ">
-      <p class="w-48 text-sm text-center bg-green-500 text-white px-5 py-1 rounded-lg rounded-r-none">{{product.description}} </p>
-      <p class="bg-green-800 text-white px-1 py-1 rounded-lg rounded-l-none">{{product.price}}€</p>
-    </div>
-   <div class="m-200 w-100 ml-6">
-      <star-rating  :rating="product.valoration" :read-only="true" :show-rating="false" :increment="0.25"
-                  active-color="#f3bf48" :star-size="30" :padding="5"></star-rating>
-    </div>
-    <div class="mt-1">
-      <div v-if="product.stock!=0">
-          <div class="flex justify-center">
-            <div v-for="(size,index) in product.sizes" :key="index">
-              <p class="mx-2"  v-if="size.stock>0" >{{size.size}}</p>
-              <p class="mx-2 text-gray-500" v-else>{{size.size}}</p>
-            </div>
-           
-          </div>
-      </div>
-      <div v-else>
-          <p class="text-red-700 text-center mt-1">SIN STOCK</p>
-      </div>
-    </div>
-  </div>
 </template>
 <script>
 export default {
-  name: "Product",
-  props:{
-    product:Object
-  },
- data(){
-   return{
-     loop:false,
-     picture:0,
-   };
- },
- created(){
+    name:"Product",
+    data(){
+        return{
+            product:{},
+            idProduct:this.$route.params.productId,
+            idCustomer:1,
+            picture:'',
+            valoration:{},
+            show:true,
+            stock:0,
+        }
+    },
+    created(){
+        this.fetchProduct();
+        this.fetchValoration();
+    },
+    methods:{
+        fetchProduct(){
+            this.$axios.get(`api/getProduct/${this.idProduct}`).then(response =>{
+                this.product=response.data;
+                this.picture=this.product.images[0].img;
+                this.stock=this.product.stock;
+            });
+        },
+        fetchValoration(){
+            this.$axios.get(`api/getValoration/${this.idCustomer}/${this.idProduct}`).then(response =>{
+                if(response.data.valoration!==undefined){
+                    this.valoration=response.data;
+                    this.show=false;
+                }
+            })
+        },
+        changePicture(e){
+            this.picture=e;
+        },
+        changeValoration:function(rating){
+            this.valoration.valoration=rating;
+           
+           if(this.valoration.id!=null){
+                 this.$axios.post(`api/updateValoration/${this.valoration.id}`,this.valoration).then(response =>{
+                    console.log('Valoración cambiada');
 
- },
- methods:{
-   startLoop(){
-     this.loop=true;
-   },
-   endLoop(){
-     this.loop=false;
-   },
-   
- } 
+                 })
+            }else{
+                this.$axios.post(`api/storeValoration/${this.idCustomer}/${this.idProduct}`,this.valoration).then(response =>{
+                    this.show=false;   
+                })
+            }
+        },
+        sizeStock(e){
+            this.stock=e;
+        },
+        generalStock(){
+            this.stock=this.product.stock;
+        },
+        
+    }
 }
 </script>
 <style>
@@ -74,6 +112,8 @@ export default {
   transition: all 0.5s;
   opacity: 0 !important;
 }
+
+
 
 .VueCarousel-slide-active {
   opacity: 1 !important;

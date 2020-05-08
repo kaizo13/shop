@@ -39,5 +39,6 @@ use Illuminate\Support\Facades\Route;
 
 
 //Valoration
-    Route::post('/storeValoration','ValorationController@store');
+    Route::post('/storeValoration/{idCustomer}/{idProduct}','ValorationController@store');
     Route::post('/updateValoration/{id}','ValorationController@update');
+    Route::get('/getValoration/{idCustomer}/{idProduct}','ValorationController@get');

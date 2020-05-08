@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class ValorationController extends Controller
 {
     
-    public function store(Request $request)
+    public function store($idCustomer,$idProduct,Request $request)
     {
         $valoration=new Valoration;
-        $valoration->idCustomer=$request->idCustomer;
-        $valoration->idProduct=$request->idProduct;
+        $valoration->idCustomer=$idCustomer;
+        $valoration->idProduct=$idProduct;
         $valoration->valoration=$request->valoration;
         $valoration->save();
     }
@@ -22,6 +22,10 @@ class ValorationController extends Controller
         $valoration=Valoration::find($id);
         $valoration->valoration=$request->valoration;
         $valoration->save();
+    }
+
+    public function get($idCustomer,$idProduct){
+        return Valoration::where('idCustomer',$idCustomer)->where('idProduct',$idProduct)->first();
     }
 
     public function destroy(Valoration $valoration)
