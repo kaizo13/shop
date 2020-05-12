@@ -1,6 +1,7 @@
 // const Example = () => import('../components/ExampleComponent');
 const Product = () => import('../components/Product');
 const Products = () => import('../components/Products');
+const Cart=() => import('../components/Cart');
 
 
 const routes = [
@@ -14,6 +15,11 @@ const routes = [
         name: "product",
         component: Product,
     },
+    {
+        path:"/cart",
+        name: "Cart",
+        component: Cart,
+    }
     
 ]
 

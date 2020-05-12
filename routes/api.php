@@ -24,6 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 //Cart
     Route::post('/storeCart','CartController@store');
+    Route::post('/addProduct','CartController@addProduct');
+    Route::delete('/deleteProductCart/{idCart}','CartController@deleteProductCart');
+    Route::get('/getCart/{id}','CartController@getCart');
 
 //Comment
     Route::post('/storeComment','CommentController@store');

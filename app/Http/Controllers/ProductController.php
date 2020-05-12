@@ -50,6 +50,7 @@ class ProductController extends Controller
             
             $array=array();
             $s=Size::find($size->idSize);
+            $array['id']=$size->idSize;
             $array['size']=$s->size;
             $array['stock']=$size->stock;
 
