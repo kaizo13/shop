@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
     Route::post('/storeCart','CartController@store');
     Route::post('/addProduct','CartController@addProduct');
     Route::delete('/deleteProductCart/{idCart}','CartController@deleteProductCart');
+    Route::delete('/emptyCart/{id}','CartController@emptyCart');
     Route::get('/getCart/{id}','CartController@getCart');
 
 //Comment

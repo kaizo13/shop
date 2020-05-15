@@ -86,5 +86,9 @@ class CartController extends Controller
         
     }
 
+    public function emptyCart($id){
+        CartProduct::where('idCart',$id)->delete();
+    }
+
     
 }
